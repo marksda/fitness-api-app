@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Propinsi;
-// use App\Http\Requests\StorePropinsiRequest;
-use App\Http\Requests\UpdatePropinsiRequest;
 use Illuminate\Http\Request;
 
 class PropinsiController extends Controller
