@@ -13,6 +13,10 @@ class PropinsiController extends Controller
   public function index()
   {
     return Propinsi::all();
+    // $query = Propinsi::query();
+    // $propinsis = $query->paginate(2)->onEachSide(1);
+
+    // return  $propinsis;
   }
 
   /**
