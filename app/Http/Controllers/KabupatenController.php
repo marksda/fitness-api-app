@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class KabupatenController extends Controller
 {
+  
   /**
    * Display a listing of the resource.
    */
