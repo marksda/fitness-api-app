@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class KabupatenController extends Controller
 {
-  
+
   /**
    * Display a listing of the resource.
    */
@@ -78,4 +78,5 @@ class KabupatenController extends Controller
 
     return ["status" => "sukses", "message" => "data berhasil dihapus"];
   }
+  
 }
