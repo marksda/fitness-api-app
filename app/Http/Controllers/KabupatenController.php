@@ -78,5 +78,5 @@ class KabupatenController extends Controller
 
     return ["status" => "sukses", "message" => "data berhasil dihapus"];
   }
-  
+
 }
