@@ -2,23 +2,24 @@
 
 namespace Database\Seeders;
 
-use App\Models\Propinsi;
+use App\Models\Kabupaten;
 use Illuminate\Database\Seeder;
 
-class PropinsiSeeder extends Seeder
+class KabupatenSeeder extends Seeder
 {
   /**
    * Run the database seeds.
    */
   public function run(): void
   {
-    $csvFile = fopen(base_path('database/data/tbl_propinsi_202501140927.csv'), 'r');
+    $csvFile = fopen(base_path('database/data/tbl_kabupaten_202501140913.csv'), 'r');
     $firstline = true;
     while (($data = fgetcsv($csvFile, 2000, ',')) !== false) {
         if (! $firstline) {
-            Propinsi::create([
+            Kabupaten::create([
                 'id' => $data['0'],
-                'nama' => $data['1'],
+                'propinsi_id' => $data['1'],
+                'nama' => $data['2'],
             ]);
         }
         $firstline = false;
