@@ -26,7 +26,7 @@ class Propinsi extends Model
    *
    * @return \Illuminate\Database\Eloquent\Relations\HasMany
    */
-  public function kabupaten(): HasMany
+  public function kabupatens(): HasMany
   {
       return $this->hasMany(Kabupaten::class, 'propinsi_id', 'id');
   }

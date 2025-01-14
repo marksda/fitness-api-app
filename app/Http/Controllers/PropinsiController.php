@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Propinsi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
-class PropinsiController extends Controller
+class PropinsiController extends Controller 
 {
   /**
    * Display a listing of the resource.
@@ -68,6 +69,8 @@ class PropinsiController extends Controller
    */
   public function destroy(Propinsi $propinsi)
   {
+    Gate::authorize('delete', $propinsi);
+
     $propinsi->delete();
 
     return ["status" => "sukses", "message" => "data berhasil dihapus"];

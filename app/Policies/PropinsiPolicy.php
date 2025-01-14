@@ -43,9 +43,11 @@ class PropinsiPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Propinsi $propinsi): bool
+    public function delete(User $user, Propinsi $propinsi): Response
     {
-        return false;
+      return $user->id === $propinsi->user_id
+            ? Response::allow()
+            : Response::deny('Hak akses ditolak untuk menghapus data propinsi');
     }
 
     /**
