@@ -7,8 +7,7 @@ use App\Enum\RolesEnum;
 use App\Models\User;
 
 class ManageDataPolicy
-{
-  
+{  
   public function manageData(User $user): bool
   {
     if($user->hasRole(RolesEnum::Admin->value)) {
@@ -22,5 +21,4 @@ class ManageDataPolicy
       }      
     }
   }
-
 }
