@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enum\PermissionsEnum;
+use App\Enum\RolesEnum;
 use App\Models\Propinsi;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -14,7 +15,7 @@ class PropinsiController extends Controller implements HasMiddleware
   public static function middleware(): array 
   {
     return [
-      new Middleware(['auth:sanctum'], except: ['show']),
+      new Middleware(['auth:sanctum'], except: ['index', 'show']),
     ];
   }
   
@@ -23,10 +24,6 @@ class PropinsiController extends Controller implements HasMiddleware
    */
   public function index()
   {
-    if (! Gate::allows(PermissionsEnum::ManageKontenNews)) {
-      abort(403, 'Hak akses ditolak untuk menghapus data propinsi');
-    }
-
     return Propinsi::all();
   }
 
@@ -36,6 +33,10 @@ class PropinsiController extends Controller implements HasMiddleware
   // public function store(StorePropinsiRequest $request)
   public function store(Request $request)
   {
+    if (! Gate::allows(RolesEnum::Admin->value . '-' . PermissionsEnum::ManageDatas->value . '-propinsi')) {
+      abort(403, 'Hak akses ditolak untuk menambah data propinsi');
+    }
+
     $fields = $request->validate([
       'id' => "required|string|size:2|regex:/^[0-9]+$/",
       'nama' => "required|string|min:3|max:255"
@@ -79,7 +80,9 @@ class PropinsiController extends Controller implements HasMiddleware
    */
   public function destroy(Propinsi $propinsi)
   {
-    Gate::authorize('delete', $propinsi);
+    if (! Gate::allows(RolesEnum::Admin->value . '-' . PermissionsEnum::ManageDatas->value . '-propinsi')) {
+      abort(403, 'Hak akses ditolak untuk menghapus data propinsi');
+    }
 
     $propinsi->delete();
 

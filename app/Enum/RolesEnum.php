@@ -11,12 +11,12 @@ enum RolesEnum: string
 
   public static function labels(): array
   {
-      return [
-        self::Admin->value => 'Admin',
-        self::Patner->value => 'Patner',
-        self::Member->value => 'Member',
-        self::Trainer->value => 'Trainer',
-      ];
+    return [
+      self::Admin->value => 'Admin',
+      self::Patner->value => 'Patner',
+      self::Member->value => 'Member',
+      self::Trainer->value => 'Trainer',
+    ];
   }
 
   public function label()

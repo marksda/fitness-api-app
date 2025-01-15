@@ -17,38 +17,43 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void
     {
-      $adminRole = Role::create(['name' =>RolesEnum::Admin->value]);
-      $patnerRole = Role::create(['name' =>RolesEnum::Patner->value]);
-      $memberRole = Role::create(['name' =>RolesEnum::Member->value]);
-      $trainerRole = Role::create(['name' =>RolesEnum::Trainer->value]);
+      // $adminRole = Role::create(['name' =>RolesEnum::Admin->value]);
+      // $patnerRole = Role::create(['name' =>RolesEnum::Patner->value]);
+      // $memberRole = Role::create(['name' =>RolesEnum::Member->value]);
+      // $trainerRole = Role::create(['name' =>RolesEnum::Trainer->value]);
 
-      $manageUserPermission = Permission::create([
-        'name' => PermissionsEnum::ManageUsers->value
-      ]);
+      // $manageUserPermission = Permission::create([
+      //   'name' => PermissionsEnum::ManageUsers->value
+      // ]);
       
-      $manageMemberPermission = Permission::create([
-        'name' => PermissionsEnum::ManageMembers->value
-      ]);
+      // $manageMemberPermission = Permission::create([
+      //   'name' => PermissionsEnum::ManageMembers->value
+      // ]);
 
-      $managePatnerPermission = Permission::create([
-        'name' => PermissionsEnum::ManagePatners->value
-      ]);
+      // $managePatnerPermission = Permission::create([
+      //   'name' => PermissionsEnum::ManagePatners->value
+      // ]);
 
-      $manageKontenNewPermission = Permission::create([
-        'name' => PermissionsEnum::ManageKontenNews->value
-      ]);  
+      // $manageKontenNewPermission = Permission::create([
+      //   'name' => PermissionsEnum::ManageKontenNews->value
+      // ]);  
+
+      // $manageDataPermission = Permission::create([
+      //   'name' => PermissionsEnum::ManageDatas->value
+      // ]);
       
-      $adminRole->syncPermissions([
-        $manageUserPermission,
-        $manageMemberPermission,
-        $managePatnerPermission,
-        $manageKontenNewPermission,
-      ]);
+      // $adminRole->syncPermissions([
+      //   $manageUserPermission,
+      //   $manageMemberPermission,
+      //   $managePatnerPermission,
+      //   $manageKontenNewPermission,
+      //   $manageDataPermission,
+      // ]);
 
-      User::factory()->create([
-        'name' => 'Administrator',
-        'email' => 'admin@fit.com',
-      ])->assignRole(RolesEnum::Admin);
+      // User::factory()->create([
+      //   'name' => 'Administrator',
+      //   'email' => 'admin@fit.com',
+      // ])->assignRole(RolesEnum::Admin);
   
     }
 }
