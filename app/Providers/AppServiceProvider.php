@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
   public function boot(): void
   {
     Gate::define(
-      RolesEnum::Admin->value . '-' . PermissionsEnum::ManageDatas->value . '-propinsi', 
+      PermissionsEnum::ManageDatas->value, 
       [ManageDataPolicy::class, 'manageData']);
   }
 }

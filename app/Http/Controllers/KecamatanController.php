@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Enum\PermissionsEnum;
-use App\Enum\RolesEnum;
-use App\Models\Propinsi;
-use Illuminate\Http\Request;
+use App\Models\Kecamatan;
+use App\Http\Requests\StoreKecamatanRequest;
+use App\Http\Requests\UpdateKecamatanRequest;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 
-class PropinsiController extends Controller implements HasMiddleware
+class KecamatanController extends Controller implements HasMiddleware
 {
   public static function middleware(): array 
   {
@@ -18,78 +18,83 @@ class PropinsiController extends Controller implements HasMiddleware
       new Middleware(['auth:sanctum'], except: ['index', 'show']),
     ];
   }
-  
   /**
    * Display a listing of the resource.
    */
   public function index()
   {
-    $query = Propinsi::query();
+    $query = Kecamatan::query();
     $isPage = request("is_page", 0);
     $sortField = request("sort_field", "nama");
     $sortDirection = request("sort_direction", "asc");
+    $idKabupatenField = request("kabupaten_id", "3515");
     $namaField = request("nama", null);
+
+    if ($idKabupatenField) {
+      $query->where("kabupaten_id", $idKabupatenField);
+    }
 
     if ($namaField) {
       $query->where("nama", "ilike", "%" . $namaField . "%");
     }
 
-    $propinsis = $isPage ? $query->orderBy($sortField, $sortDirection)
+    $kecamatans = $isPage ? $query->orderBy($sortField, $sortDirection)
             ->paginate(10)
             // ->onEachSide(1)
             : $query->orderBy($sortField, $sortDirection)->get();
 
-    return $propinsis;
+    return $kecamatans;
   }
 
   /**
    * Store a newly created resource in storage.
    */
-  // public function store(StorePropinsiRequest $request)
-  public function store(Request $request)
+  public function store(StoreKecamatanRequest $request)
   {
-    if (! Gate::allows(PermissionsEnum::ManageDatas->value . '-propinsi')) {
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
       abort(403, 'Hak akses ditolak untuk menambah data propinsi');
     }
 
     $fields = $request->validate([
-      'id' => "required|string|size:2|regex:/^[0-9]+$/",
+      'id' => "required|string|size:7|regex:/^[0-9]+$/",
+      'kabupaten_id' => "required|string|size:4|regex:/^[0-9]+$/",
       'nama' => "required|string|min:3|max:255"
     ]);
 
     $fields['nama'] = strtoupper($fields['nama']);
 
-    $propinsi = Propinsi::create($fields);
+    $kecamatan = Kecamatan::create($fields);
 
-    return $propinsi;
+    return $kecamatan;
+    
   }
 
   /**
    * Display the specified resource.
    */
-  public function show(Propinsi $propinsi)
+  public function show(Kecamatan $kecamatan)
   {
-    return $propinsi;
+    return $kecamatan;
   }
 
   /**
    * Update the specified resource in storage.
    */
-  // public function update(UpdatePropinsiRequest $request, Propinsi $propinsi)
-  public function update(Request $request, Propinsi $propinsi)
+  public function update(UpdateKecamatanRequest $request, Kecamatan $kecamatan)
   {
-    if (! Gate::allows(PermissionsEnum::ManageDatas->value . '-propinsi')) {
-      abort(403, 'Hak akses ditolak untuk update data propinsi');
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
+      abort(403, 'Hak akses ditolak untuk menambah data kecamatan');
     }
 
     $fields = $request->validate([
-      'id' => "required|string|size:2|regex:/^[0-9]+$/",
+      'id' => "required|string|size:7|regex:/^[0-9]+$/",
+      'kabupaten_id' => "required|string|size:4|regex:/^[0-9]+$/",
       'nama' => "required|string|min:3|max:255"
     ]);
 
     $fields['nama'] = strtoupper($fields['nama']);
 
-    $propinsi->update($fields);
+    $kecamatan->update($fields);
 
     return ["status" => "sukses", "message" => "data berhasil diupdate"];
   }
@@ -97,14 +102,13 @@ class PropinsiController extends Controller implements HasMiddleware
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(Propinsi $propinsi)
+  public function destroy(Kecamatan $kecamatan)
   {
-    if (! Gate::allows(PermissionsEnum::ManageDatas->value . '-propinsi')) {
-      abort(403, 'Hak akses ditolak untuk hapus data propinsi');
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
+      abort(403, 'Hak akses ditolak untuk menambah data kecamatan');
     }
 
-
-    $propinsi->delete();
+    $kecamatan->delete();
 
     return ["status" => "sukses", "message" => "data berhasil dihapus"];
   }
