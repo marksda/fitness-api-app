@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\PermissionsEnum;
 use App\Models\Propinsi;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -10,10 +11,10 @@ use Illuminate\Support\Facades\Gate;
 
 class PropinsiController extends Controller implements HasMiddleware
 {
-  public static function middleware() 
+  public static function middleware(): array 
   {
     return [
-      new Middleware('auth:sanctum', except: ['index', 'show'])
+      new Middleware(['auth:sanctum'], except: ['show']),
     ];
   }
   
@@ -22,11 +23,11 @@ class PropinsiController extends Controller implements HasMiddleware
    */
   public function index()
   {
-    return Propinsi::all();
-    // $query = Propinsi::query();
-    // $propinsis = $query->paginate(2)->onEachSide(1);
+    if (! Gate::allows(PermissionsEnum::ManageKontenNews)) {
+      abort(403, 'Hak akses ditolak untuk menghapus data propinsi');
+    }
 
-    // return  $propinsis;
+    return Propinsi::all();
   }
 
   /**

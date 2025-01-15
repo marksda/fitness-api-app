@@ -7,5 +7,5 @@ enum PermissionsEnum: string
   case ManageUsers = 'manage_users';
   case ManageMembers = 'manage_members';
   case ManagePatners = 'manage_patners';
-  case ManageKontenNews = 'manage_KontenNews';  
+  case ManageKontenNews = 'manage_konten_news';  
 }
