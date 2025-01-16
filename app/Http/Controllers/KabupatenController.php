@@ -53,7 +53,7 @@ class KabupatenController extends Controller implements HasMiddleware
   public function store(Request $request)
   {
     if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
-      abort(403, 'Hak akses ditolak untuk menambah data propinsi');
+      abort(403, 'Hak akses ditolak untuk menambah data kabupaten');
     }
 
     // $fields = $request->validate([
@@ -91,7 +91,7 @@ class KabupatenController extends Controller implements HasMiddleware
   public function update(Request $request, Kabupaten $kabupaten)
   {
     if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
-      abort(403, 'Hak akses ditolak untuk menambah data kabupaten');
+      abort(403, 'Hak akses ditolak untuk update data kabupaten');
     }
 
     $fields = $request->validate([
@@ -113,7 +113,7 @@ class KabupatenController extends Controller implements HasMiddleware
   public function destroy(Kabupaten $kabupaten)
   {
     if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
-      abort(403, 'Hak akses ditolak untuk menambah data kabupaten');
+      abort(403, 'Hak akses ditolak untuk delete data kabupaten');
     }
 
     $kabupaten->delete();

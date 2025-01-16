@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Kecamatan extends Model
 {
@@ -34,5 +35,15 @@ class Kecamatan extends Model
   public function kabupaten(): BelongsTo
   {
     return $this->belongsTo(Kabupaten::class, 'kabupaten_id', 'id');
+  }
+
+  /**
+   * Get all of the desa for the Kecamatan
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\HasMany
+   */
+  public function desa(): HasMany
+  {
+      return $this->hasMany(Desa::class, 'kecamatan_id', 'id');
   }
 }
