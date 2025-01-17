@@ -5,9 +5,9 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class PersonCollectionResource extends ResourceCollection
+class PersonCollection extends ResourceCollection
 {
-  public $collects = PersonResource::class;
+  // public $collects = PersonResource::class;
   /**
    * Transform the resource collection into an array.
    *

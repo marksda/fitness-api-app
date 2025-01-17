@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Enum\PermissionsEnum;
 use App\Models\Person;
 use App\Http\Requests\UpdatePersonRequest;
-use App\Http\Resources\PersonCollectionResource;
+use App\Http\Resources\PersonCollection;
 use App\Http\Resources\PersonResource;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -64,7 +64,7 @@ class PersonController extends Controller implements HasMiddleware
       $people = $query->get();
     }
 
-    return new PersonCollectionResource($people);
+    return new PersonCollection($people);
   }
 
   /**
