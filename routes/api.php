@@ -22,9 +22,9 @@ Route::middleware(['auth:sanctum'])->group(function() {
 Route::apiResource('propinsis', PropinsiController::class); 
 Route::apiResource('kabupatens', KabupatenController::class);
 Route::apiResource('kecamatans', KecamatanController::class);
-Route::apiResource('genders', GenderController::class);
-Route::apiResource('people', PersonController::class);
 Route::apiResource('desas', DesaController::class);
+Route::apiResource('people', PersonController::class);
+Route::apiResource('genders', GenderController::class);
 Route::apiResource('agamas', AgamaController::class);
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
