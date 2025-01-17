@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Enum\PermissionsEnum;
 use App\Models\Agama;
-use App\Http\Requests\StoreAgamaRequest;
 use App\Http\Requests\UpdateAgamaRequest;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -65,7 +65,7 @@ class AgamaController extends Controller implements HasMiddleware
   /**
    * Store a newly created resource in storage.
    */
-  public function store(StoreAgamaRequest $request)
+  public function store(Request $request)
   {
     if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
       abort(403, 'Hak akses ditolak untuk menambah data agama');
@@ -89,15 +89,28 @@ class AgamaController extends Controller implements HasMiddleware
    */
   public function show(Agama $agama)
   {
-    //
+    return $agama;
   }
 
   /**
    * Update the specified resource in storage.
    */
-  public function update(UpdateAgamaRequest $request, Agama $agama)
+  public function update(Request $request, Agama $agama)
   {
-    //
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
+      abort(403, 'Hak akses ditolak untuk update data agama');
+    }
+
+    $fields = $request->validate([
+      'id' => "required|string|size:2|regex:/^[0-9]+$/",
+      'nama' => "required|string|min:3|max:255"
+    ]);
+
+    $fields['nama'] = strtoupper($fields['nama']);
+
+    $agama->update($fields);
+
+    return ["status" => "sukses", "message" => "data berhasil diupdate"];
   }
 
   /**
@@ -105,6 +118,13 @@ class AgamaController extends Controller implements HasMiddleware
    */
   public function destroy(Agama $agama)
   {
-    //
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
+      abort(403, 'Hak akses ditolak untuk hapus data agama');
+    }
+
+
+    $agama->delete();
+
+    return ["status" => "sukses", "message" => "data berhasil dihapus"];
   }
 }

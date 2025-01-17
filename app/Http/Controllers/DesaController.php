@@ -6,6 +6,7 @@ use App\Enum\PermissionsEnum;
 use App\Models\Desa;
 use App\Http\Requests\StoreDesaRequest;
 use App\Http\Requests\UpdateDesaRequest;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -68,7 +69,7 @@ class DesaController extends Controller implements HasMiddleware
   /**
    * Store a newly created resource in storage.
    */
-  public function store(StoreDesaRequest $request)
+  public function store(Request $request)
   {
     if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
       abort(403, 'Hak akses ditolak untuk menambah data desa');
@@ -98,7 +99,7 @@ class DesaController extends Controller implements HasMiddleware
   /**
    * Update the specified resource in storage.
    */
-  public function update(UpdateDesaRequest $request, Desa $desa)
+  public function update(Request $request, Desa $desa)
   {
     if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
       abort(403, 'Hak akses ditolak untuk update data desa');

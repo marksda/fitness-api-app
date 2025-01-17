@@ -97,7 +97,7 @@ class PropinsiController extends Controller implements HasMiddleware
   // public function update(UpdatePropinsiRequest $request, Propinsi $propinsi)
   public function update(Request $request, Propinsi $propinsi)
   {
-    if (! Gate::allows(PermissionsEnum::ManageDatas->value . '-propinsi')) {
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
       abort(403, 'Hak akses ditolak untuk update data propinsi');
     }
 
@@ -118,7 +118,7 @@ class PropinsiController extends Controller implements HasMiddleware
    */
   public function destroy(Propinsi $propinsi)
   {
-    if (! Gate::allows(PermissionsEnum::ManageDatas->value . '-propinsi')) {
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
       abort(403, 'Hak akses ditolak untuk hapus data propinsi');
     }
 
