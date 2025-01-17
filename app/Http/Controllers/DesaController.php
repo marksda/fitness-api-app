@@ -6,6 +6,8 @@ use App\Enum\PermissionsEnum;
 use App\Models\Desa;
 use App\Http\Requests\StoreDesaRequest;
 use App\Http\Requests\UpdateDesaRequest;
+use App\Http\Resources\DesaCollection;
+use App\Http\Resources\DesaResource;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -56,14 +58,13 @@ class DesaController extends Controller implements HasMiddleware
       if(property_exists($filter, "is_paging")) {
         $isPaging = $filter->is_paging;
         $desas = $isPaging ? $query->paginate(10) : $query->get();
-      }
-
-      return $desas;      
+      }     
+    }
+    else {
+      $desas = $query->get();
     }
 
-    $desas = $query->get();
-
-    return $desas;
+    return new DesaCollection($desas);
   }
 
   /**
@@ -93,7 +94,7 @@ class DesaController extends Controller implements HasMiddleware
    */
   public function show(Desa $desa)
   {
-    return $desa;
+    return new DesaResource($desa);
   }
 
   /**

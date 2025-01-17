@@ -6,6 +6,8 @@ use App\Enum\PermissionsEnum;
 use App\Models\Kecamatan;
 use App\Http\Requests\StoreKecamatanRequest;
 use App\Http\Requests\UpdateKecamatanRequest;
+use App\Http\Resources\KecamatanCollection;
+use App\Http\Resources\KecamatanResource;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -58,14 +60,13 @@ class KecamatanController extends Controller implements HasMiddleware
       if(property_exists($filter, "is_paging")) {
         $isPaging = $filter->is_paging;
         $kecamatans = $isPaging ? $query->paginate(10) : $query->get();
-      }
-
-      return $kecamatans;      
+      }  
+    }
+    else {
+      $kecamatans = $query->get();
     }
 
-    $kecamatans = $query->get();
-
-    return $kecamatans;
+    return new KecamatanCollection($kecamatans);
   }
 
   /**
@@ -96,7 +97,7 @@ class KecamatanController extends Controller implements HasMiddleware
    */
   public function show(Kecamatan $kecamatan)
   {
-    return $kecamatan;
+    return new KecamatanResource($kecamatan);
   }
 
   /**

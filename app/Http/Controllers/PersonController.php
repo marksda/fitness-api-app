@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enum\PermissionsEnum;
 use App\Models\Person;
-use App\Http\Requests\UpdatePersonRequest;
 use App\Http\Resources\PersonCollection;
 use App\Http\Resources\PersonResource;
 use Illuminate\Http\Request;
@@ -106,9 +105,29 @@ class PersonController extends Controller implements HasMiddleware
   /**
    * Update the specified resource in storage.
    */
-  public function update(UpdatePersonRequest $request, Person $person)
+  public function update(Request $request, Person $person)
   {
-    //
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
+      abort(403, 'Hak akses ditolak untuk update data person');
+    }
+
+    $fields = $request->validate([
+      'person_id' => "required|string|min:3|max:255",
+      'nama' => "required|string|min:3|max:255",
+      'jenis_kelamin_id' => "required|string|size:2|regex:/^[0-9]+$/",
+      'agama_id' => "required|string|size:2|regex:/^[0-9]+$/",
+      'propinsi_id' => "required|string|size:2|regex:/^[0-9]+$/",
+      'kabupaten_id' => "required|string|size:4|regex:/^[0-9]+$/",
+      'kecamatan_id' => "required|string|size:7|regex:/^[0-9]+$/",
+      'desa_id' => "required|string|size:10|regex:/^[0-9]+$/",
+      'alamat' => "required|string|min:3|max:255",
+    ]);
+
+    $fields['nama'] = strtoupper($fields['nama']);
+
+    $person->update($fields);
+
+    return ["status" => "sukses", "message" => "data berhasil diupdate"];
   }
 
   /**
@@ -116,6 +135,12 @@ class PersonController extends Controller implements HasMiddleware
    */
   public function destroy(Person $person)
   {
-    //
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
+      abort(403, 'Hak akses ditolak untuk hapus data person');
+    }
+
+    $person->delete();
+
+    return ["status" => "sukses", "message" => "data berhasil dihapus"];
   }
 }

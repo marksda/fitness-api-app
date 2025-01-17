@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enum\PermissionsEnum;
 use App\Http\Resources\KabupatenCollection;
+use App\Http\Resources\KabupatenResource;
 use App\Models\Kabupaten;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -101,7 +102,7 @@ class KabupatenController extends Controller implements HasMiddleware
    */
   public function show(Kabupaten $kabupaten)
   {
-    return $kabupaten;
+    return new KabupatenResource($kabupaten);
   }
 
   /**
