@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Enum\PermissionsEnum;
-use App\Models\Propinsi;
-use Illuminate\Http\Request;
+use App\Models\Agama;
+use App\Http\Requests\StoreAgamaRequest;
+use App\Http\Requests\UpdateAgamaRequest;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 
-class PropinsiController extends Controller implements HasMiddleware
+class AgamaController extends Controller implements HasMiddleware
 {
   public static function middleware(): array 
   {
@@ -17,13 +18,13 @@ class PropinsiController extends Controller implements HasMiddleware
       new Middleware(['auth:sanctum'], except: ['index', 'show']),
     ];
   }
-  
+
   /**
    * Display a listing of the resource.
    */
   public function index()
   {
-    $query = Propinsi::query();
+    $query = Agama::query();
     $filter = request("filters", null);
 
     if($filter != null) {
@@ -51,25 +52,25 @@ class PropinsiController extends Controller implements HasMiddleware
 
       if(property_exists($filter, "is_paging")) {
         $isPaging = $filter->is_paging;
-        $propinsis = $isPaging ? $query->paginate(10) : $query->get();
+        $agamas = $isPaging ? $query->paginate(10) : $query->get();
       }
 
-      return $propinsis;      
+      return $agamas;      
     }
 
-    $propinsis = $query->get();
-    return $propinsis;
+    $agamas = $query->get();
+    return $agamas;
   }
 
   /**
    * Store a newly created resource in storage.
    */
-  // public function store(StorePropinsiRequest $request)
-  public function store(Request $request)
+  public function store(StoreAgamaRequest $request)
   {
     if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
-      abort(403, 'Hak akses ditolak untuk menambah data propinsi');
+      abort(403, 'Hak akses ditolak untuk menambah data agama');
     }
+
 
     $fields = $request->validate([
       'id' => "required|string|size:2|regex:/^[0-9]+$/",
@@ -78,53 +79,32 @@ class PropinsiController extends Controller implements HasMiddleware
 
     $fields['nama'] = strtoupper($fields['nama']);
 
-    $propinsi = Propinsi::create($fields);
+    $agama = Agama::create($fields);
 
-    return $propinsi;
+    return $agama;
   }
 
   /**
    * Display the specified resource.
    */
-  public function show(Propinsi $propinsi)
+  public function show(Agama $agama)
   {
-    return $propinsi;
+    //
   }
 
   /**
    * Update the specified resource in storage.
    */
-  // public function update(UpdatePropinsiRequest $request, Propinsi $propinsi)
-  public function update(Request $request, Propinsi $propinsi)
+  public function update(UpdateAgamaRequest $request, Agama $agama)
   {
-    if (! Gate::allows(PermissionsEnum::ManageDatas->value . '-propinsi')) {
-      abort(403, 'Hak akses ditolak untuk update data propinsi');
-    }
-
-    $fields = $request->validate([
-      'id' => "required|string|size:2|regex:/^[0-9]+$/",
-      'nama' => "required|string|min:3|max:255"
-    ]);
-
-    $fields['nama'] = strtoupper($fields['nama']);
-
-    $propinsi->update($fields);
-
-    return ["status" => "sukses", "message" => "data berhasil diupdate"];
+    //
   }
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(Propinsi $propinsi)
+  public function destroy(Agama $agama)
   {
-    if (! Gate::allows(PermissionsEnum::ManageDatas->value . '-propinsi')) {
-      abort(403, 'Hak akses ditolak untuk hapus data propinsi');
-    }
-
-
-    $propinsi->delete();
-
-    return ["status" => "sukses", "message" => "data berhasil dihapus"];
+    //
   }
 }

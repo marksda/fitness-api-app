@@ -13,14 +13,9 @@ return new class extends Migration
   public function up(): void
   {
     DB::statement('CREATE SCHEMA IF NOT EXISTS master');
-    Schema::create('master.desas', function (Blueprint $table) {
-      $table->char('id', 10)->primary();
+    Schema::create('master.agamas', function (Blueprint $table) {
+      $table->char('id', 2)->primary();
       $table->string('nama');
-      $table->char('kecamatan_id', 7);
-      $table->foreign('kecamatan_id')
-            ->references('id')->on('master.kecamatans')
-            ->cascadeOnUpdate()
-            ->restrictOnDelete();
     });
   }
 
@@ -29,6 +24,6 @@ return new class extends Migration
    */
   public function down(): void
   {
-    Schema::dropIfExists('master.desas');
+    Schema::dropIfExists('master.agamas');
   }
 };
