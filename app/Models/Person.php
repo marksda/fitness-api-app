@@ -4,23 +4,85 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Person extends Model
 {
   /** @use HasFactory<\Database\Factories\PersonFactory> */
   use HasFactory;
 
+  protected $table = 'master.people';
+
   protected $fillable = [
-    'id',
+    'person_id',
     'nama',
-    'nik',
     'jenis_kelamin_id',
-    'agama',
+    'agama_id',
     'propinsi_id',
     'kabupaten_id',
     'kecamatan_id',
     'desa_id',
     'alamat'
   ];
+
+  /**
+   * Get the gender that owns the Person
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function gender(): BelongsTo
+  {
+    return $this->belongsTo(Gender::class, 'jenis_kelamin_id', 'id');
+  }
+
+  /**
+   * Get the agama that owns the Person
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function agama(): BelongsTo
+  {
+    return $this->belongsTo(Agama::class, 'agama_id', 'id');
+  }
+
+  /**
+   * Get the propinsi that owns the Person
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function propinsi(): BelongsTo
+  {
+    return $this->belongsTo(Propinsi::class, 'propinsi_id', 'id');
+  }
+
+  /**
+   * Get the kabupaten that owns the Person
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function kabupaten(): BelongsTo
+  {
+    return $this->belongsTo(Kabupaten::class, 'kabupaten_id', 'id');
+  }
+
+  /**
+   * Get the kecamatan that owns the Person
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function kecamatan(): BelongsTo
+  {
+    return $this->belongsTo(Kecamatan::class, 'kecamatan_id', 'id');
+  }
+
+  /**
+   * Get the desa that owns the Person
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function desa(): BelongsTo
+  {
+      return $this->belongsTo(Desa::class, 'desa_id', 'id');
+  }
 
 }

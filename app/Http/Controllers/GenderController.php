@@ -3,15 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Enum\PermissionsEnum;
-use App\Models\Person;
-use App\Http\Requests\StorePersonRequest;
-use App\Http\Requests\UpdatePersonRequest;
+use App\Models\Gender;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 
-class PersonController extends Controller implements HasMiddleware
+class GenderController extends Controller implements HasMiddleware
 {
   public static function middleware(): array 
   {
@@ -25,7 +23,7 @@ class PersonController extends Controller implements HasMiddleware
    */
   public function index()
   {
-    $query = Person::query();
+    $query = Gender::query();
     $filter = request("filters", null);
 
     if($filter != null) {
@@ -35,12 +33,9 @@ class PersonController extends Controller implements HasMiddleware
         $fieldsFilter = $filter->fields_filter;
         foreach ($fieldsFilter as $fieldFilter) {
           switch ($fieldFilter->field_name) {
-            case 'person_id':
-              $query->where($fieldFilter->field_name, $fieldFilter->value);
-              break; 
             case 'nama':
-                $query->where($fieldFilter->field_name, "ilike", "%" . $fieldFilter->value . "%");
-                break;      
+              $query->where($fieldFilter->field_name, "ilike", "%" . $fieldFilter->value . "%");
+              break;       
             default:
               break;
           }
@@ -56,15 +51,14 @@ class PersonController extends Controller implements HasMiddleware
 
       if(property_exists($filter, "is_paging")) {
         $isPaging = $filter->is_paging;
-        $people = $isPaging ? $query->paginate(10) : $query->get();
+        $genders = $isPaging ? $query->paginate(10) : $query->get();
       }
 
-      return $people;      
+      return $genders;      
     }
 
-    $people = $query->get();
-
-    return $people;
+    $genders = $query->get();
+    return $genders;
   }
 
   /**
@@ -73,49 +67,62 @@ class PersonController extends Controller implements HasMiddleware
   public function store(Request $request)
   {
     if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
-      abort(403, 'Hak akses ditolak untuk menambah data person');
+      abort(403, 'Hak akses ditolak untuk menambah data gender');
     }
 
     $fields = $request->validate([
-      'person_id' => "required|string|min:3|max:255",
-      'nama' => "required|string|min:3|max:255",
-      'jenis_kelamin_id' => "required|string|size:2|regex:/^[0-9]+$/",
-      'agama_id' => "required|string|size:2|regex:/^[0-9]+$/",
-      'propinsi_id' => "required|string|size:2|regex:/^[0-9]+$/",
-      'kabupaten_id' => "required|string|size:4|regex:/^[0-9]+$/",
-      'kecamatan_id' => "required|string|size:7|regex:/^[0-9]+$/",
-      'desa_id' => "required|string|size:10|regex:/^[0-9]+$/",
-      'alamat' => "required|string|min:3|max:255",
+      'id' => "required|string|size:2|regex:/^[0-9]+$/",
+      'nama' => "required|string|min:3|max:255"
     ]);
 
     $fields['nama'] = strtoupper($fields['nama']);
 
-    $person = Person::create($fields);
+    $gender = Gender::create($fields);
 
-    return $person;
+    return $gender;
   }
 
   /**
    * Display the specified resource.
    */
-  public function show(Person $person)
+  public function show(Gender $gender)
   {
-    //
+    return $gender;
   }
 
   /**
    * Update the specified resource in storage.
    */
-  public function update(UpdatePersonRequest $request, Person $person)
+  public function update(Request $request, Gender $gender)
   {
-    //
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
+      abort(403, 'Hak akses ditolak untuk update data gender');
+    }
+
+    $fields = $request->validate([
+      'id' => "required|string|size:2|regex:/^[0-9]+$/",
+      'nama' => "required|string|min:3|max:255"
+    ]);
+
+    $fields['nama'] = strtoupper($fields['nama']);
+
+    $gender->update($fields);
+
+    return ["status" => "sukses", "message" => "data berhasil diupdate"];
   }
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(Person $person)
+  public function destroy(Gender $gender)
   {
-    //
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
+      abort(403, 'Hak akses ditolak untuk hapus data gender');
+    }
+
+
+    $gender->delete();
+
+    return ["status" => "sukses", "message" => "data berhasil dihapus"];
   }
 }
