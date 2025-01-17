@@ -25,24 +25,44 @@ class KecamatanController extends Controller implements HasMiddleware
   public function index()
   {
     $query = Kecamatan::query();
-    $isPage = request("is_page", 0);
-    $sortField = request("sort_field", "nama");
-    $sortDirection = request("sort_direction", "asc");
-    $idKabupatenField = request("kabupaten_id", "3515");
-    $namaField = request("nama", null);
 
-    if ($idKabupatenField) {
-      $query->where("kabupaten_id", $idKabupatenField);
+    $filter = request("filters", null);
+
+    if($filter != null) {
+      $filter = json_decode($filter);
+
+      if(property_exists($filter, "fields_filter")) {
+        $fieldsFilter = $filter->fields_filter;
+        foreach ($fieldsFilter as $fieldFilter) {
+          switch ($fieldFilter->field_name) {
+            case 'nama':
+              $query->where($fieldFilter->field_name, "ilike", "%" . $fieldFilter->value . "%");
+              break;  
+            case 'kabupaten_id':
+                $query->where($fieldFilter->field_name, $fieldFilter->value);
+                break;       
+            default:
+              break;
+          }
+        }        
+      }
+
+      if(property_exists($filter, "fields_sorter")) {
+        $fieldsSort = $filter->fields_sorter;
+        foreach ($fieldsSort as $fieldSort) {
+          $query->orderBy($fieldSort->field_name, $fieldSort->value);
+        }
+      }
+
+      if(property_exists($filter, "is_paging")) {
+        $isPaging = $filter->is_paging;
+        $kecamatans = $isPaging ? $query->paginate(10) : $query->get();
+      }
+
+      return $kecamatans;      
     }
 
-    if ($namaField) {
-      $query->where("nama", "ilike", "%" . $namaField . "%");
-    }
-
-    $kecamatans = $isPage ? $query->orderBy($sortField, $sortDirection)
-            ->paginate(10)
-            // ->onEachSide(1)
-            : $query->orderBy($sortField, $sortDirection)->get();
+    $kecamatans = $query->get();
 
     return $kecamatans;
   }

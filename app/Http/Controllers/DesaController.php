@@ -24,24 +24,43 @@ class DesaController extends Controller implements HasMiddleware
   public function index()
   {
     $query = Desa::query();
-    $isPage = request("is_page", 0);
-    $sortField = request("sort_field", "nama");
-    $sortDirection = request("sort_direction", "asc");
-    $idKecamatanField = request("kecamatan_id", "3515110");
-    $namaField = request("nama", null);
+    $filter = request("filters", null);
 
-    if ($idKecamatanField) {
-      $query->where("kecamatan_id", $idKecamatanField);
+    if($filter != null) {
+      $filter = json_decode($filter);
+
+      if(property_exists($filter, "fields_filter")) {
+        $fieldsFilter = $filter->fields_filter;
+        foreach ($fieldsFilter as $fieldFilter) {
+          switch ($fieldFilter->field_name) {
+            case 'nama':
+              $query->where($fieldFilter->field_name, "ilike", "%" . $fieldFilter->value . "%");
+              break;  
+            case 'kecamatan_id':
+                $query->where($fieldFilter->field_name, $fieldFilter->value);
+                break;       
+            default:
+              break;
+          }
+        }        
+      }
+
+      if(property_exists($filter, "fields_sorter")) {
+        $fieldsSort = $filter->fields_sorter;
+        foreach ($fieldsSort as $fieldSort) {
+          $query->orderBy($fieldSort->field_name, $fieldSort->value);
+        }
+      }
+
+      if(property_exists($filter, "is_paging")) {
+        $isPaging = $filter->is_paging;
+        $desas = $isPaging ? $query->paginate(10) : $query->get();
+      }
+
+      return $desas;      
     }
 
-    if ($namaField) {
-      $query->where("nama", "ilike", "%" . $namaField . "%");
-    }
-
-    $desas = $isPage ? $query->orderBy($sortField, $sortDirection)
-            ->paginate(10)
-            // ->onEachSide(1)
-            : $query->orderBy($sortField, $sortDirection)->get();
+    $desas = $query->get();
 
     return $desas;
   }

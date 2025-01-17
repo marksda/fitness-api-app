@@ -50,28 +50,13 @@ class PropinsiController extends Controller implements HasMiddleware
         }
       }
 
-      if(property_exists($filter, "is_pagging")) {
-        $isPage = $filter->is_pagging;
-        $propinsis = $isPage ? $query->paginate(10) : $query->get();
+      if(property_exists($filter, "is_paging")) {
+        $isPaging = $filter->is_paging;
+        $propinsis = $isPaging ? $query->paginate(10) : $query->get();
       }
 
       return $propinsis;      
     }
-
-    
-    // $isPage = request("is_page", 0);
-    // $sortField = request("sort_field", "nama");
-    // $sortDirection = request("sort_direction", "asc");
-    // $namaField = request("nama", null);
-
-    // if ($namaField) {
-    //   $query->where("nama", "ilike", "%" . $namaField . "%");
-    // }
-
-    // $propinsis = $isPage ? $query->orderBy($sortField, $sortDirection)
-    //         ->paginate(10)
-    //         // ->onEachSide(1)
-    //         : $query->orderBy($sortField, $sortDirection)->get();
 
     $propinsis = $query->get();
     return $propinsis;
