@@ -3,9 +3,8 @@
 namespace App\Providers;
 
 use App\Enum\PermissionsEnum;
-use App\Enum\RolesEnum;
 use App\Policies\ManageDataPolicy;
-use App\Policies\PropinsiPolicy;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
    */
   public function boot(): void
   {
+    JsonResource::withoutWrapping();
+
     Gate::define(
       PermissionsEnum::ManageDatas->value, 
       [ManageDataPolicy::class, 'manageData']);

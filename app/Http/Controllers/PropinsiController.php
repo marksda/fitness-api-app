@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Enum\PermissionsEnum;
+use App\Http\Resources\PropinsiCollection;
+use App\Http\Resources\PropinsiResource;
 use App\Models\Propinsi;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -34,7 +36,7 @@ class PropinsiController extends Controller implements HasMiddleware
         foreach ($fieldsFilter as $fieldFilter) {
           switch ($fieldFilter->field_name) {
             case 'nama':
-              $query->where($fieldFilter->field_name, "ilike", "%" . $fieldFilter->value . "%");
+              $query->whereLike($fieldFilter->field_name, "%" . $fieldFilter->value . "%", caseSensitive: false);
               break;       
             default:
               break;
@@ -51,14 +53,14 @@ class PropinsiController extends Controller implements HasMiddleware
 
       if(property_exists($filter, "is_paging")) {
         $isPaging = $filter->is_paging;
-        $propinsis = $isPaging ? $query->paginate(10) : $query->get();
-      }
-
-      return $propinsis;      
+        $propinsis = $isPaging ? $query->paginate(3) : $query->get();
+      }    
     }
-
-    $propinsis = $query->get();
-    return $propinsis;
+    else {
+      $propinsis = $query->get();
+    }
+    
+    return new PropinsiCollection($propinsis);
   }
 
   /**
@@ -88,7 +90,7 @@ class PropinsiController extends Controller implements HasMiddleware
    */
   public function show(Propinsi $propinsi)
   {
-    return $propinsi;
+    return new PropinsiResource($propinsi);
   }
 
   /**

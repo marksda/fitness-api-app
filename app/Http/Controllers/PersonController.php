@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Enum\PermissionsEnum;
 use App\Models\Person;
-use App\Http\Requests\StorePersonRequest;
 use App\Http\Requests\UpdatePersonRequest;
+use App\Http\Resources\PersonCollectionResource;
+use App\Http\Resources\PersonResource;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -39,7 +40,7 @@ class PersonController extends Controller implements HasMiddleware
               $query->where($fieldFilter->field_name, $fieldFilter->value);
               break; 
             case 'nama':
-                $query->where($fieldFilter->field_name, "ilike", "%" . $fieldFilter->value . "%");
+                $query->whereLike($fieldFilter->field_name, "%" . $fieldFilter->value . "%", caseSensitive: false);
                 break;      
             default:
               break;
@@ -58,13 +59,12 @@ class PersonController extends Controller implements HasMiddleware
         $isPaging = $filter->is_paging;
         $people = $isPaging ? $query->paginate(10) : $query->get();
       }
-
-      return $people;      
+    }
+    else {
+      $people = $query->get();
     }
 
-    $people = $query->get();
-
-    return $people;
+    return new PersonCollectionResource($people);
   }
 
   /**
@@ -100,7 +100,7 @@ class PersonController extends Controller implements HasMiddleware
    */
   public function show(Person $person)
   {
-    //
+    return new PersonResource($person);
   }
 
   /**

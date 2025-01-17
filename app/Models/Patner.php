@@ -14,6 +14,7 @@ class Patner extends Model
 
   protected $fillable = [
     'id',
+    'person_id',
     'nama',
     'npwp',
     'propinsi_id',

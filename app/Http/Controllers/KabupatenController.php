@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enum\PermissionsEnum;
+use App\Http\Resources\KabupatenCollection;
 use App\Models\Kabupaten;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -35,7 +36,7 @@ class KabupatenController extends Controller implements HasMiddleware
         foreach ($fieldsFilter as $fieldFilter) {
           switch ($fieldFilter->field_name) {
             case 'nama':
-              $query->where($fieldFilter->field_name, "ilike", "%" . $fieldFilter->value . "%");
+              $query->whereLike($fieldFilter->field_name, "%" . $fieldFilter->value . "%", caseSensitive: false);
               break;  
             case 'propinsi_id':
                 $query->where($fieldFilter->field_name, $fieldFilter->value);
@@ -56,14 +57,13 @@ class KabupatenController extends Controller implements HasMiddleware
       if(property_exists($filter, "is_paging")) {
         $isPaging = $filter->is_paging;
         $kabupatens = $isPaging ? $query->paginate(10) : $query->get();
-      }
-
-      return $kabupatens;      
+      }  
+    }
+    else {
+      $kabupatens = $query->get();
     }
 
-    $kabupaten = $query->get();
-
-    return $kabupaten;
+    return new KabupatenCollection($kabupatens);
   }
 
   /**
