@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enum\PermissionsEnum;
 use App\Models\Agama;
-use App\Http\Requests\UpdateAgamaRequest;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
