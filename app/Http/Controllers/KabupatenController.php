@@ -57,8 +57,11 @@ class KabupatenController extends Controller implements HasMiddleware
 
       if(property_exists($filter, "is_paging")) {
         $isPaging = $filter->is_paging;
-        $kabupatens = $isPaging ? $query->paginate(10) : $query->get();
+        $kabupatens = $isPaging ? $query->paginate(50) : $query->get();
       }  
+      else {
+        $kabupatens = $query->get();
+      }
     }
     else {
       $kabupatens = $query->get();

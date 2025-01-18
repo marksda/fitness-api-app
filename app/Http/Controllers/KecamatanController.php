@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enum\PermissionsEnum;
 use App\Models\Kecamatan;
-use App\Http\Requests\StoreKecamatanRequest;
-use App\Http\Requests\UpdateKecamatanRequest;
 use App\Http\Resources\KecamatanCollection;
 use App\Http\Resources\KecamatanResource;
 use Illuminate\Http\Request;
@@ -60,7 +58,10 @@ class KecamatanController extends Controller implements HasMiddleware
       if(property_exists($filter, "is_paging")) {
         $isPaging = $filter->is_paging;
         $kecamatans = $isPaging ? $query->paginate(10) : $query->get();
-      }  
+      } 
+      else {
+        $kecamatans = $query->get();
+      } 
     }
     else {
       $kecamatans = $query->get();

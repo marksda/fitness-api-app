@@ -53,8 +53,11 @@ class PropinsiController extends Controller implements HasMiddleware
 
       if(property_exists($filter, "is_paging")) {
         $isPaging = $filter->is_paging;
-        $propinsis = $isPaging ? $query->paginate(3) : $query->get();
+        $propinsis = $isPaging ? $query->paginate(10) : $query->get();
       }    
+      else {
+        $propinsis = $query->get();
+      }
     }
     else {
       $propinsis = $query->get();
