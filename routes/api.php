@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AgamaController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClubController;
 use App\Http\Controllers\DesaController;
 use App\Http\Controllers\GenderController;
 use App\Http\Controllers\KabupatenController;
@@ -26,5 +27,6 @@ Route::apiResource('desas', DesaController::class);
 Route::apiResource('people', PersonController::class);
 Route::apiResource('genders', GenderController::class);
 Route::apiResource('agamas', AgamaController::class);
+Route::apiResource('clubs', ClubController::class);
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login'])->name('login');

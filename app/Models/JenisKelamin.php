@@ -9,4 +9,14 @@ class JenisKelamin extends Model
 {
     /** @use HasFactory<\Database\Factories\JenisKelaminFactory> */
     use HasFactory;
+
+    protected $table = 'master.genders';
+    protected $keyType = 'string';
+    public $timestamps = false;
+    public $incrementing = false;
+
+    protected $fillable = [
+      'id',
+      'nama'
+    ];
 }

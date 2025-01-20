@@ -79,14 +79,6 @@ class KabupatenController extends Controller implements HasMiddleware
       abort(403, 'Hak akses ditolak untuk menambah data kabupaten');
     }
 
-    // $fields = $request->validate([
-    //   'id' => "required|string|size:2|regex:/^[0-9]+$/",
-    //   'propinsi_id' => "required|string|size:4|regex:/^[0-9]+$/",
-    //   'nama' => "required|string|min:3|max:255"
-    // ]);
-
-    // $propinsi = Propinsi::find($fields['propinsi_id'])->kabupatens()->create($fields);
-
     $fields = $request->validate([
       'id' => "required|string|size:4|regex:/^[0-9]+$/",
       'propinsi_id' => "required|string|size:2|regex:/^[0-9]+$/",
