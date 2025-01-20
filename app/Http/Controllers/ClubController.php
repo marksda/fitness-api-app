@@ -102,15 +102,32 @@ class ClubController extends Controller implements HasMiddleware
    */
   public function show(Club $club)
   {
-    //
+    return new ClubResource($club);
   }
 
   /**
    * Update the specified resource in storage.
    */
-  public function update(UpdateClubRequest $request, Club $club)
+  public function update(Request $request, Club $club)
   {
-    //
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
+      abort(403, 'Hak akses ditolak untuk merubah data club');
+    }
+
+    $fields = $request->validate([
+      'nama' => "required|string|min:3|max:255",
+      'deskripsi' => "required|string|min:3",
+      'propinsi_id' => "required|string|size:2|regex:/^[0-9]+$/",
+      'kabupaten_id' => "required|string|size:4|regex:/^[0-9]+$/",
+      'kecamatan_id' => "required|string|size:7|regex:/^[0-9]+$/",
+      'desa_id' => "required|string|size:10|regex:/^[0-9]+$/",
+      'alamat' => "required|string",
+      'patner_id' => "required|numeric"
+    ]);
+
+    $club->update($fields);
+
+    return ["status" => "sukses", "message" => "data berhasil diupdate"];
   }
 
   /**
@@ -118,6 +135,12 @@ class ClubController extends Controller implements HasMiddleware
    */
   public function destroy(Club $club)
   {
-    //
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
+      abort(403, 'Hak akses ditolak untuk menghapus data club');
+    }
+
+    $club->delete();
+
+    return ["status" => "sukses", "message" => "data berhasil dihapus"];
   }
 }
