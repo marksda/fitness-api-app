@@ -26,6 +26,7 @@ class FasilitasSeeder extends Seeder
         ['id' => '08', 'nama' => 'SHOWER ROOM', 'jenis_fasilitas_id' => '01'],
         ['id' => '09', 'nama' => 'RUANG GANTI', 'jenis_fasilitas_id' => '01'],
         ['id' => '10', 'nama' => 'BOXING AREA', 'jenis_fasilitas_id' => '02'],
+        ['id' => '11', 'nama' => 'CYCLING AREA', 'jenis_fasilitas_id' => '02'],
       )
       ->create();
   }

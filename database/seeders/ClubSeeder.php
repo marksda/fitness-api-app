@@ -17,7 +17,7 @@ class ClubSeeder extends Seeder
       ->count(1)
       ->sequence(
         [
-          'nama' => 'GYM HUB PURI BUGAR SEGER', 
+          'nama' => 'PURI ZONE-1', 
           'patner_id' => '01',
           'deskripsi' => 'Gym premium GYM HUB hadir untuk semua orang. Memiliki berbagai peralatan modern dan fasilitas yang lengkap. Anda juga dapat memilih untuk berlatih sendiri, dengan pelatih pribadi, atau dengan grup di kelas. Anda akan menemukan segalanya di sini untuk merasakan pengalaman fitness yang terbaik.',
           'propinsi_id' => '35',
