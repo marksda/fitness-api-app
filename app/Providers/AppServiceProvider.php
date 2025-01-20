@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
 
     Gate::define(
       PermissionsEnum::ManageDatas->value, 
-      [ManageDataPolicy::class, 'manageData']);
+      [ManageDataPolicy::class, 'manageData']
+    );
   }
 }
