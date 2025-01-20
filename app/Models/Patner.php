@@ -12,6 +12,8 @@ class Patner extends Model
   /** @use HasFactory<\Database\Factories\PatnerFactory> */
   use HasFactory;
 
+  protected $table = 'master.patners';
+
   protected $fillable = [
     'id',
     'person_id',

@@ -13,18 +13,21 @@ return new class extends Migration
   public function up(): void
   {
     DB::statement('CREATE SCHEMA IF NOT EXISTS master');
-    Schema::create('master.people', function (Blueprint $table) {
+    Schema::create('master.patners', function (Blueprint $table) {
       $table->id();
-      $table->string('person_id')->unique();
+      $table->bigInteger('person_id');
       $table->string('nama');
-      $table->char('jenis_kelamin_id', 2);
-      $table->char('agama_id', 2);
+      $table->string('npwp');
       $table->char('propinsi_id', 2);
       $table->char('kabupaten_id', 4);
       $table->char('kecamatan_id', 7);
       $table->char('desa_id', 10);
       $table->string('alamat');
       $table->timestamps();
+      $table->foreign('person_id')
+            ->references('id')->on('master.people')
+            ->cascadeOnUpdate()
+            ->restrictOnDelete();
       $table->foreign('propinsi_id')
             ->references('id')->on('master.propinsis')
             ->cascadeOnUpdate()
@@ -49,6 +52,6 @@ return new class extends Migration
    */
   public function down(): void
   {
-    Schema::dropIfExists('master.people');
+    Schema::dropIfExists('master.patners');
   }
 };

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Person extends Model
 {
@@ -14,7 +15,7 @@ class Person extends Model
   protected $table = 'master.people';
 
   protected $fillable = [
-    'person_id',
+    'identifier',
     'nama',
     'jenis_kelamin_id',
     'agama_id',
@@ -85,4 +86,13 @@ class Person extends Model
       return $this->belongsTo(Desa::class, 'desa_id', 'id');
   }
 
+  /**
+   * Get all of the patner for the Person
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\HasMany
+   */
+  public function patner(): HasMany
+  {
+      return $this->hasMany(Patner::class, 'person_id', 'id');
+  }
 }

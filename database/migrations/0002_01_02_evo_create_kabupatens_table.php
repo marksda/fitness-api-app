@@ -13,7 +13,6 @@ return new class extends Migration
   public function up(): void
   {
     DB::statement('CREATE SCHEMA IF NOT EXISTS master');
-
     Schema::create('master.kabupatens', function (Blueprint $table) {
       $table->char('id', 4)->primary();
       $table->string('nama');
