@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enum\PermissionsEnum;
 use App\Models\Club;
-use App\Http\Requests\UpdateClubRequest;
 use App\Http\Resources\ClubCollection;
 use App\Http\Resources\ClubResource;
 use App\Http\Resources\ClubSimpleCollection;
@@ -39,8 +38,11 @@ class ClubController extends Controller implements HasMiddleware
         foreach ($fieldsFilter as $fieldFilter) {
           switch ($fieldFilter->field_name) {
             case 'nama':
-              $query->where($fieldFilter->field_name, "ilike", "%" . $fieldFilter->value . "%");
-              break;     
+              $query->where('nama', "ilike", "%" . $fieldFilter->value . "%");
+              break;    
+            case 'kabupaten_id':
+              $query->where('kabupaten_id', $fieldFilter->value);
+              break;      
             case 'simple':  
               $listSimple = $fieldFilter->value;
               break;
