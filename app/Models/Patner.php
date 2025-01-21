@@ -47,6 +47,6 @@ class Patner extends Model
    */
   public function clubs(): HasMany
   {
-      return $this->hasMany(Club::class, 'patner_id', 'id');
+    return $this->hasMany(Club::class, 'patner_id', 'id');
   }
 }
