@@ -86,6 +86,7 @@ class PersonController extends Controller implements HasMiddleware
       'kecamatan_id' => "required|string|size:7|regex:/^[0-9]+$/",
       'desa_id' => "required|string|size:10|regex:/^[0-9]+$/",
       'alamat' => "required|string|min:3|max:255",
+      'kode_pos' => "string|size:5|regex:/^[0-9]+$/",
       'tinggi_badan' => "numeric",
       'berat_badan' => "numeric",
     ]);
