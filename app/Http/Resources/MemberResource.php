@@ -17,7 +17,7 @@ class MemberResource extends JsonResource
     return [
       'id' => $this->id,
       'person' => new PersonResource($this->person),
-      'club' => new ClubResource($this->club),
+      'club' => new ClubSimpleResource($this->club),
       "status" => new StatusResource($this->status)
     ];
   }
