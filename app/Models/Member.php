@@ -7,6 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Member extends Model
 {
-    /** @use HasFactory<\Database\Factories\MemberFactory> */
-    use HasFactory;
+  /** @use HasFactory<\Database\Factories\MemberFactory> */
+  use HasFactory;
+
+  protected $table = 'master.members';
+
+  protected $fillable = [
+    'person_id',
+    'club_id',
+    'status_id'
+  ];
+
 }

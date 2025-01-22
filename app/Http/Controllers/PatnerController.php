@@ -116,20 +116,20 @@ class PatnerController extends Controller implements HasMiddleware
     }
 
     $fields = $request->validate([
-      'person_id' => "required|string|size:16|regex:/^[0-9]+$/",
-      'nama' => "required|string|min:3|max:255",
-      'npwp' => "required|string|min:16|max:20",
-      'propinsi_id' => "required|string|size:2|regex:/^[0-9]+$/",
-      'kabupaten_id' => "required|string|size:4|regex:/^[0-9]+$/",
-      'kecamatan_id' => "required|string|size:7|regex:/^[0-9]+$/",
-      'desa_id' => "required|string|size:10|regex:/^[0-9]+$/",
-      'alamat' => "required|string",
-      'status_id' => "required|string|size:2|regex:/^[0-9]+$/"
+      'person_id' => "string|size:16|regex:/^[0-9]+$/",
+      'nama' => "string|min:3|max:255",
+      'npwp' => "string|min:16|max:20",
+      'propinsi_id' => "string|size:2|regex:/^[0-9]+$/",
+      'kabupaten_id' => "string|size:4|regex:/^[0-9]+$/",
+      'kecamatan_id' => "string|size:7|regex:/^[0-9]+$/",
+      'desa_id' => "string|size:10|regex:/^[0-9]+$/",
+      'alamat' => "string",
+      'status_id' => "string|size:2|regex:/^[0-9]+$/"
     ]);
 
     $patner->update($fields);
 
-    return new PatnerResource($patner);
+    return ["status" => "sukses", "message" => "data berhasil diupdate"];
   }
 
   /**
