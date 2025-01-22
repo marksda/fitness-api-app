@@ -76,8 +76,9 @@ class PersonController extends Controller implements HasMiddleware
     }
 
     $fields = $request->validate([
-      'person_id' => "required|string|min:3|max:255",
+      'identifier' => "required|string|min:3|max:255",
       'nama' => "required|string|min:3|max:255",
+      'tanggal_lahir' => "required|date_format:Y-m-d",
       'jenis_kelamin_id' => "required|string|size:2|regex:/^[0-9]+$/",
       'agama_id' => "required|string|size:2|regex:/^[0-9]+$/",
       'propinsi_id' => "required|string|size:2|regex:/^[0-9]+$/",
@@ -85,6 +86,8 @@ class PersonController extends Controller implements HasMiddleware
       'kecamatan_id' => "required|string|size:7|regex:/^[0-9]+$/",
       'desa_id' => "required|string|size:10|regex:/^[0-9]+$/",
       'alamat' => "required|string|min:3|max:255",
+      'tinggi_badan' => "numeric",
+      'berat_badan' => "numeric",
     ]);
 
     $fields['nama'] = strtoupper($fields['nama']);

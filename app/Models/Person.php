@@ -17,13 +17,17 @@ class Person extends Model
   protected $fillable = [
     'identifier',
     'nama',
+    'tanggal_lahir',
     'jenis_kelamin_id',
     'agama_id',
     'propinsi_id',
     'kabupaten_id',
     'kecamatan_id',
     'desa_id',
-    'alamat'
+    'alamat',
+    'kode_pos',
+    'tinggi_badan',
+    'berat_badan'
   ];
 
   /**

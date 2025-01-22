@@ -17,6 +17,7 @@ return new class extends Migration
       $table->id();
       $table->string('identifier')->unique();
       $table->string('nama');
+      $table->date('tanggal_lahir');
       $table->char('jenis_kelamin_id', 2);
       $table->char('agama_id', 2);
       $table->char('propinsi_id', 2);
@@ -24,6 +25,9 @@ return new class extends Migration
       $table->char('kecamatan_id', 7);
       $table->char('desa_id', 10);
       $table->string('alamat');
+      $table->char('kode_pos', 5);
+      $table->decimal('berat_badan', total: 6, places: 2);
+      $table->decimal('tinggi_badan', total: 5, places: 2);
       $table->timestamps();
       $table->foreign('propinsi_id')
             ->references('id')->on('master.propinsis')
