@@ -33,5 +33,5 @@ Route::apiResource('people', PersonController::class);
 Route::apiResource('propinsis', PropinsiController::class);
 Route::apiResource('statuses', StatusController::class);
 
-Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/register/{jenis_register}', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login'])->name('login');

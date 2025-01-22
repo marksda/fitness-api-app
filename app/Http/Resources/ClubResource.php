@@ -25,7 +25,8 @@ class ClubResource extends JsonResource
         'kecamatan' => new KecamatanResource($this->kecamatan),
         'desa' => new DesaResource($this->desa),
         'detail' => $this->alamat
-      ]
+      ],
+      "status" => new StatusResource($this->status)
     ];
   }
 }

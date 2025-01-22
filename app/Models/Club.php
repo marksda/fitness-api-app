@@ -22,11 +22,8 @@ class Club extends Model
     'kecamatan_id',
     'desa_id',
     'alamat',
-    'patner_id'
-  ];
-
-  protected $hidden = [    
-    'patner_id'
+    'patner_id',
+    'status_id'
   ];
 
   /**
@@ -87,6 +84,16 @@ class Club extends Model
   public function fasilitas(): BelongsToMany
   {
     return $this->belongsToMany(Fasilitas::class, 'master.club_fasilitas', 'club_id', 'fasilitas_id');
+  }
+
+  /**
+   * Get the status that owns the Patner
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function status(): BelongsTo
+  {
+    return $this->belongsTo(Status::class, 'status_id', 'id');
   }
 
 }

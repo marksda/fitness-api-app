@@ -9,21 +9,14 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
   
-  public function register(Request $request) {
-    $fields = $request->validate([
-      'name' => 'required|max:255',
-      'email' => 'required|email|unique:users',
-      'password' => 'required|confirmed'
-    ]);
+  public function register(Request $request, string $jenis_register) {
+    if ($jenis_register == 'member') {
+      return $this->memberRegister($request);
+    }
+    else if ($jenis_register == 'patner') {
 
-    $user = User::create($fields);
-
-    $token = $user->createToken($request->name);
+    }
     
-    return [
-      'user' => $user,
-      'token' => $token->plainTextToken
-    ];
   }
 
   public function login(Request $request) {
@@ -58,4 +51,20 @@ class AuthController extends Controller
     ];
   }
 
+  private function memberRegister(Request $request) {
+    $fields = $request->validate([
+      'name' => 'required|max:255',
+      'email' => 'required|email|unique:users',
+      'password' => 'required|confirmed'
+    ]);
+
+    $user = User::create($fields);
+
+    $token = $user->createToken($request->name);
+    
+    return [
+      'user' => $user,
+      'token' => $token->plainTextToken
+    ];
+  }
 }

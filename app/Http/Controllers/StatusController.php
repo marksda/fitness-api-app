@@ -86,7 +86,7 @@ class StatusController extends Controller implements HasMiddleware
 
     $status = Status::create($fields);
 
-    return $status;
+    return new StatusResource($status);
   }
 
   /**

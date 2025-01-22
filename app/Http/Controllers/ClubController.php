@@ -91,7 +91,8 @@ class ClubController extends Controller implements HasMiddleware
       'kecamatan_id' => "required|string|size:7|regex:/^[0-9]+$/",
       'desa_id' => "required|string|size:10|regex:/^[0-9]+$/",
       'alamat' => "required|string",
-      'patner_id' => "required|numeric"
+      'patner_id' => "required|numeric",
+      'status_id' => "required|string|size:2|regex:/^[0-9]+$/"
     ]);
     
     $club = Club::create($fields);
@@ -117,14 +118,15 @@ class ClubController extends Controller implements HasMiddleware
     }
 
     $fields = $request->validate([
-      'nama' => "required|string|min:3|max:255",
-      'deskripsi' => "required|string|min:3",
-      'propinsi_id' => "required|string|size:2|regex:/^[0-9]+$/",
-      'kabupaten_id' => "required|string|size:4|regex:/^[0-9]+$/",
-      'kecamatan_id' => "required|string|size:7|regex:/^[0-9]+$/",
-      'desa_id' => "required|string|size:10|regex:/^[0-9]+$/",
-      'alamat' => "required|string",
-      'patner_id' => "required|numeric"
+      'nama' => "string|min:3|max:255",
+      'deskripsi' => "string|min:3",
+      'propinsi_id' => "string|size:2|regex:/^[0-9]+$/",
+      'kabupaten_id' => "string|size:4|regex:/^[0-9]+$/",
+      'kecamatan_id' => "string|size:7|regex:/^[0-9]+$/",
+      'desa_id' => "string|size:10|regex:/^[0-9]+$/",
+      'alamat' => "string",
+      'patner_id' => "numeric",
+      'status_id' => "string|size:2|regex:/^[0-9]+$/"
     ]);
 
     $club->update($fields);

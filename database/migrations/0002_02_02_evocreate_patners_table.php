@@ -23,6 +23,7 @@ return new class extends Migration
       $table->char('kecamatan_id', 7);
       $table->char('desa_id', 10);
       $table->string('alamat');
+      $table->char('status_id', 2);
       $table->timestamps();
       $table->foreign('person_id')
             ->references('id')->on('master.people')
@@ -42,6 +43,10 @@ return new class extends Migration
             ->restrictOnDelete();
       $table->foreign('desa_id')
             ->references('id')->on('master.desas')
+            ->cascadeOnUpdate()
+            ->restrictOnDelete();
+      $table->foreign('status_id')
+            ->references('id')->on('master.statuses')
             ->cascadeOnUpdate()
             ->restrictOnDelete();
     });
