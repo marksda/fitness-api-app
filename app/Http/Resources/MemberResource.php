@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,7 +19,8 @@ class MemberResource extends JsonResource
       'id' => $this->id,
       'person' => new PersonResource($this->person),
       'club' => new ClubSimpleResource($this->club),
-      "status" => new StatusResource($this->status)
+      'tanggal_gabung' => Carbon::parse($this->date_create)->format('d-m-Y'),
+      'status' => new StatusResource($this->status),
     ];
   }
 }

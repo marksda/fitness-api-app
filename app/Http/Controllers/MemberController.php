@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\PermissionsEnum;
 use App\Models\Member;
-use App\Http\Requests\StoreMemberRequest;
-use App\Http\Requests\UpdateMemberRequest;
 use App\Http\Resources\MemberCollection;
+use App\Http\Resources\MemberResource;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Gate;
 
 class MemberController extends Controller implements HasMiddleware
 {
@@ -94,7 +95,20 @@ class MemberController extends Controller implements HasMiddleware
    */
   public function store(Request $request)
   {
-    //
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
+      abort(403, 'Hak akses ditolak untuk menambah data member');
+    }
+
+    $fields = $request->validate([
+      'person_id' => "required|numeric",
+      'club_id' => "required|numeric",
+      'status_id' => "required|string|size:2|regex:/^[0-9]+$/"
+    ]);
+
+
+    $member = Member::create($fields);
+
+    return new MemberResource($member);
   }
 
   /**
@@ -102,15 +116,27 @@ class MemberController extends Controller implements HasMiddleware
    */
   public function show(Member $member)
   {
-    //
+    return new MemberResource($member);
   }
 
   /**
    * Update the specified resource in storage.
    */
-  public function update(UpdateMemberRequest $request, Member $member)
+  public function update(Request $request, Member $member)
   {
-    //
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
+      abort(403, 'Hak akses ditolak untuk mengubah data member');
+    }
+
+    $fields = $request->validate([
+      'person_id' => "numeric",
+      'club_id' => "numeric",
+      'status_id' => "string|size:2|regex:/^[0-9]+$/"
+    ]);
+
+    $member->update($fields);
+
+    return ["status" => "sukses", "message" => "data berhasil diupdate"];
   }
 
   /**
@@ -118,6 +144,12 @@ class MemberController extends Controller implements HasMiddleware
    */
   public function destroy(Member $member)
   {
-    //
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
+      abort(403, 'Hak akses ditolak untuk menghapus data member');
+    }
+
+    $member->delete();
+
+    return ["status" => "sukses", "message" => "data berhasil dihapus"];
   }
 }
