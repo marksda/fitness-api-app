@@ -25,7 +25,8 @@ class ClubSeeder extends Seeder
           'kecamatan_id' => '3515110',
           'desa_id' => '3515110020',
           'alamat' => 'Ruko Puri Indah lt. 2 no.4, Jln. Raya Cemengkalang',
-          'patner_id' => 1
+          'patner_id' => 1,
+          'status_id' => '01'
         ]
       )
       ->create();

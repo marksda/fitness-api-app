@@ -23,6 +23,7 @@ return new class extends Migration
       $table->char('desa_id', 10);
       $table->string('alamat');
       $table->bigInteger('patner_id');
+      $table->char('status_id', 2);
       $table->timestamps();
       $table->foreign('propinsi_id')
             ->references('id')->on('master.propinsis')
@@ -42,6 +43,10 @@ return new class extends Migration
             ->restrictOnDelete();
       $table->foreign('patner_id')
             ->references('id')->on('master.patners')
+            ->cascadeOnUpdate()
+            ->restrictOnDelete();
+      $table->foreign('status_id')
+            ->references('id')->on('master.statuses')
             ->cascadeOnUpdate()
             ->restrictOnDelete();
     });

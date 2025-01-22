@@ -15,7 +15,6 @@ class Patner extends Model
   protected $table = 'master.patners';
 
   protected $fillable = [
-    'id',
     'person_id',
     'nama',
     'npwp',
@@ -23,12 +22,10 @@ class Patner extends Model
     'kabupaten_id',
     'kecamatan_id',
     'desa_id',
-    'alamat'
+    'alamat',
+    'status_id'
   ];
 
-  protected $hidden = [
-    'person_id'
-  ];
 
   /**
    * Get the person that owns the Patner
@@ -48,5 +45,55 @@ class Patner extends Model
   public function clubs(): HasMany
   {
     return $this->hasMany(Club::class, 'patner_id', 'id');
+  }
+
+  /**
+   * Get the propinsi that owns the Person
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function propinsi(): BelongsTo
+  {
+    return $this->belongsTo(Propinsi::class, 'propinsi_id', 'id');
+  }
+
+  /**
+   * Get the kabupaten that owns the Person
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function kabupaten(): BelongsTo
+  {
+    return $this->belongsTo(Kabupaten::class, 'kabupaten_id', 'id');
+  }
+
+  /**
+   * Get the kecamatan that owns the Person
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function kecamatan(): BelongsTo
+  {
+    return $this->belongsTo(Kecamatan::class, 'kecamatan_id', 'id');
+  }
+
+  /**
+   * Get the desa that owns the Person
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function desa(): BelongsTo
+  {
+    return $this->belongsTo(Desa::class, 'desa_id', 'id');
+  }
+
+  /**
+   * Get the status that owns the Patner
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function status(): BelongsTo
+  {
+      return $this->belongsTo(Status::class, 'status_id', 'id');
   }
 }

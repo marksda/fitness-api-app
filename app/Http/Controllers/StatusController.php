@@ -3,20 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Enum\PermissionsEnum;
-use App\Http\Resources\PropinsiCollection;
-use App\Http\Resources\PropinsiResource;
-use App\Models\Propinsi;
+use App\Models\Status;
+use App\Http\Requests\StoreStatusRequest;
+use App\Http\Requests\UpdateStatusRequest;
+use App\Http\Resources\StatusCollection;
+use App\Http\Resources\StatusResource;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 
-class PropinsiController extends Controller implements HasMiddleware
+class StatusController extends Controller implements HasMiddleware
 {
   public static function middleware(): array 
   {
     return [
-      new Middleware(['auth:sanctum'], except: ['index', 'show']),
+      new Middleware(['auth:sanctum']),
     ];
   }
   
@@ -25,7 +27,7 @@ class PropinsiController extends Controller implements HasMiddleware
    */
   public function index()
   {
-    $query = Propinsi::query();
+    $query = Status::query();
     $filter = request("filters", null);
 
     if($filter != null) {
@@ -53,27 +55,26 @@ class PropinsiController extends Controller implements HasMiddleware
 
       if(property_exists($filter, "is_paging")) {
         $isPaging = $filter->is_paging;
-        $propinsis = $isPaging ? $query->paginate(10) : $query->get();
+        $statuses = $isPaging ? $query->paginate(10) : $query->get();
       }    
       else {
-        $propinsis = $query->get();
+        $statuses = $query->get();
       }
     }
     else {
-      $propinsis = $query->get();
+      $statuses = $query->get();
     }
     
-    return new PropinsiCollection($propinsis);
+    return new StatusCollection($statuses);
   }
 
   /**
    * Store a newly created resource in storage.
    */
-  // public function store(StorePropinsiRequest $request)
   public function store(Request $request)
   {
     if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
-      abort(403, 'Hak akses ditolak untuk menambah data propinsi');
+      abort(403, 'Hak akses ditolak untuk menambah data status');
     }
 
     $fields = $request->validate([
@@ -83,27 +84,26 @@ class PropinsiController extends Controller implements HasMiddleware
 
     $fields['nama'] = strtoupper($fields['nama']);
 
-    $propinsi = Propinsi::create($fields);
+    $status = Status::create($fields);
 
-    return new PropinsiResource($propinsi);
+    return $status;
   }
 
   /**
    * Display the specified resource.
    */
-  public function show(Propinsi $propinsi)
+  public function show(Status $status)
   {
-    return new PropinsiResource($propinsi);
+    return new StatusResource($status);
   }
 
   /**
    * Update the specified resource in storage.
    */
-  // public function update(UpdatePropinsiRequest $request, Propinsi $propinsi)
-  public function update(Request $request, Propinsi $propinsi)
+  public function update(Request $request, Status $status)
   {
     if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
-      abort(403, 'Hak akses ditolak untuk update data propinsi');
+      abort(403, 'Hak akses ditolak untuk update data status');
     }
 
     $fields = $request->validate([
@@ -113,7 +113,7 @@ class PropinsiController extends Controller implements HasMiddleware
 
     $fields['nama'] = strtoupper($fields['nama']);
 
-    $propinsi->update($fields);
+    $status->update($fields);
 
     return ["status" => "sukses", "message" => "data berhasil diupdate"];
   }
@@ -121,14 +121,14 @@ class PropinsiController extends Controller implements HasMiddleware
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(Propinsi $propinsi)
+  public function destroy(Status $status)
   {
     if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
-      abort(403, 'Hak akses ditolak untuk hapus data propinsi');
+      abort(403, 'Hak akses ditolak untuk hapus data status');
     }
 
 
-    $propinsi->delete();
+    $status->delete();
 
     return ["status" => "sukses", "message" => "data berhasil dihapus"];
   }
