@@ -28,6 +28,8 @@ return new class extends Migration
       $table->char('kode_pos', 5);
       $table->decimal('berat_badan', total: 6, places: 2);
       $table->decimal('tinggi_badan', total: 5, places: 2);
+      $table->string('email')->unique();
+      $table->string('no_hp', 25);
       $table->timestamps();
       $table->foreign('propinsi_id')
             ->references('id')->on('master.propinsis')

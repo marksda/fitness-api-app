@@ -29,7 +29,9 @@ class PersonResource extends JsonResource
         'desa' => new DesaResource($this->desa),
         'detail' => $this->alamat,
         'kode_pos' => $this->kode_pos
-      )
+      ),
+      'email' => $this->email,
+      'no_hp' => $this->no_hp
     );
     
     if($this->berat_badan) {

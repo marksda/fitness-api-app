@@ -16,7 +16,8 @@ class Member extends Model
   protected $fillable = [
     'person_id',
     'club_id',
-    'status_id'
+    'status_id',
+    'user_id'
   ];
 
   /**
@@ -37,6 +38,16 @@ class Member extends Model
   public function club(): BelongsTo
   {
     return $this->belongsTo(Club::class, 'club_id', 'id');
+  }
+
+  /**
+   * Get the user that owns the Member
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function user(): BelongsTo
+  {
+      return $this->belongsTo(User::class, 'user_id', 'id');
   }
 
   /**

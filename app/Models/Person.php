@@ -26,8 +26,14 @@ class Person extends Model
     'desa_id',
     'alamat',
     'kode_pos',
+    'email',
+    'no_hp',
     'tinggi_badan',
     'berat_badan'
+  ];
+
+  protected $hidden = [
+    'user_id'
   ];
 
   /**
@@ -99,4 +105,5 @@ class Person extends Model
   {
       return $this->hasMany(Patner::class, 'person_id', 'id');
   }
+  
 }
