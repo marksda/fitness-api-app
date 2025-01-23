@@ -16,7 +16,7 @@ class MemberSeeder extends Seeder
     Member::factory()
       ->count(1)
       ->sequence(
-        ['person_id' => 1, 'club_id' => 1, 'status_id' => '01']
+        ['person_id' => 1, 'club_id' => 1, 'status_id' => '01', 'user_id' => 1]
       )
       ->create();
   }

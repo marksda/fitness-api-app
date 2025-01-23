@@ -17,7 +17,7 @@ class PersonResource extends JsonResource
   {
     $person = array(
       'id' => $this->id,
-      'person_id' => $this->identifier,
+      'identifier' => $this->identifier,
       'nama' => $this->nama,   
       'tanggal_lahir' => Carbon::parse($this->tanggal_lahir)->format('d-m-Y'),
       'gender' => $this->gender,

@@ -66,7 +66,7 @@ class AuthController extends Controller
       'tanggal_lahir' => "required|date_format:Y-m-d",
       'jenis_kelamin_id' => "required|string|size:2|regex:/^[0-9]+$/",
       'agama_id' => "required|string|size:2|regex:/^[0-9]+$/",
-      'propinsi_id' => "required|string|size:2|regex:/^[0-9]+$/",
+      'provinsi_id' => "required|string|size:2|regex:/^[0-9]+$/",
       'kabupaten_id' => "required|string|size:4|regex:/^[0-9]+$/",
       'kecamatan_id' => "required|string|size:7|regex:/^[0-9]+$/",
       'desa_id' => "required|string|size:10|regex:/^[0-9]+$/",

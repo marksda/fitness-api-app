@@ -39,8 +39,8 @@ class KabupatenController extends Controller implements HasMiddleware
             case 'nama':
               $query->whereLike($fieldFilter->field_name, "%" . $fieldFilter->value . "%", caseSensitive: false);
               break;  
-            case 'propinsi_id':
-                $query->where($fieldFilter->field_name, $fieldFilter->value);
+            case 'provinsi_id':
+                $query->where('propinsi_id', $fieldFilter->value);
                 break;       
             default:
               break;
@@ -81,7 +81,7 @@ class KabupatenController extends Controller implements HasMiddleware
 
     $fields = $request->validate([
       'id' => "required|string|size:4|regex:/^[0-9]+$/",
-      'propinsi_id' => "required|string|size:2|regex:/^[0-9]+$/",
+      'provinsi_id' => "required|string|size:2|regex:/^[0-9]+$/",
       'nama' => "required|string|min:3|max:255"
     ]);
 
@@ -111,7 +111,7 @@ class KabupatenController extends Controller implements HasMiddleware
 
     $fields = $request->validate([
       'id' => "required|string|size:4|regex:/^[0-9]+$/",
-      'propinsi_id' => "required|string|size:2|regex:/^[0-9]+$/",
+      'provinsi_id' => "required|string|size:2|regex:/^[0-9]+$/",
       'nama' => "required|string|min:3|max:255"
     ]);
 

@@ -18,6 +18,7 @@ return new class extends Migration
       $table->bigInteger('person_id');
       $table->bigInteger('club_id');
       $table->char('status_id', 2);
+      $table->bigInteger('user_id');
       $table->timestamps();
       $table->foreign('person_id')
             ->references('id')->on('master.people')
@@ -29,6 +30,10 @@ return new class extends Migration
             ->restrictOnDelete();
       $table->foreign('status_id')
             ->references('id')->on('master.statuses')
+            ->cascadeOnUpdate()
+            ->restrictOnDelete();
+      $table->foreign('user_id')
+            ->references('id')->on('public.user_id')
             ->cascadeOnUpdate()
             ->restrictOnDelete();
     });
