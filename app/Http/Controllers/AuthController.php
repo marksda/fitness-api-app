@@ -100,7 +100,7 @@ class AuthController extends Controller
         $person->tanggal_lahir = $fields['tanggal_lahir'];
         $person->jenis_kelamin_id = $fields['jenis_kelamin_id'];
         $person->agama_id = $fields['agama_id'];
-        $person->propinsi_id = $fields['propinsi_id'];
+        $person->propinsi_id = $fields['provinsi_id'];
         $person->kabupaten_id = $fields['kabupaten_id'];
         $person->kecamatan_id = $fields['kecamatan_id'];
         $person->desa_id = $fields['desa_id'];
