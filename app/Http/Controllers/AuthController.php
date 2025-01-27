@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enum\RolesEnum;
-use App\Http\Resources\ClubResource;
+use App\Http\Resources\ClubSimpleResource;
 use App\Http\Resources\MemberResource;
 use App\Http\Resources\PersonResource;
 use App\Http\Resources\StatusResource;
@@ -54,7 +54,7 @@ class AuthController extends Controller
     if($user->hasRole(RolesEnum::Member->value)) {
       $profile = [
         'person' => new PersonResource($member['person']), 
-        'club' => new ClubResource($member['club']), 
+        'club' => new ClubSimpleResource($member['club']), 
         'tanggal_gabung' => [
           'value' => Carbon::parse($member['date_create'])->format('Y-m-d'),
           'formatted' => Carbon::parse($member['date_create'])->format('d-m-Y')

@@ -15,27 +15,26 @@ class PersonResource extends JsonResource
    */
   public function toArray(Request $request): array
   {
-    $person = array(
+    $person = [
       'id' => $this->id,
       'identifier' => $this->identifier,
       'nama' => $this->nama,   
-      'tanggal_lahir' => array(
-        'value' => Carbon::parse($this->tanggal_lahir)->format('Y-m-d'),
-        'formatted' => Carbon::parse($this->tanggal_lahir)->format('d-m-Y'),
-      ),
+      'tanggal_lahir' => $this->tanggal_lahir,
       'gender' => $this->gender,
       'agama' => $this->agama,
-      'alamat' => array(
+      'alamat' => [
         'propinsi' => new PropinsiResource($this->propinsi),
         'kabupaten' => new KabupatenResource($this->kabupaten),
         'kecamatan' => new KecamatanResource($this->kecamatan),
         'desa' => new DesaResource($this->desa),
         'detail' => $this->alamat,
         'kode_pos' => $this->kode_pos
-      ),
-      'email' => $this->email,
-      'no_hp' => $this->no_hp
-    );
+      ],
+      'kontak' => [
+        'email' => $this->email,
+        'no_hp' => $this->no_hp
+      ]
+    ];
     
     if($this->berat_badan) {
       $person['berat_badan'] = (float) $this->berat_badan;
