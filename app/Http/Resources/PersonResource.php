@@ -19,7 +19,10 @@ class PersonResource extends JsonResource
       'id' => $this->id,
       'identifier' => $this->identifier,
       'nama' => $this->nama,   
-      'tanggal_lahir' => Carbon::parse($this->tanggal_lahir)->format('d-m-Y'),
+      'tanggal_lahir' => array(
+        'value' => Carbon::parse($this->tanggal_lahir)->format('Y-m-d'),
+        'formatted' => Carbon::parse($this->tanggal_lahir)->format('d-m-Y'),
+      ),
       'gender' => $this->gender,
       'agama' => $this->agama,
       'alamat' => array(
@@ -35,11 +38,11 @@ class PersonResource extends JsonResource
     );
     
     if($this->berat_badan) {
-      $person['berat_badan'] = $this->berat_badan;
+      $person['berat_badan'] = (float) $this->berat_badan;
     }
 
     if($this->tinggi_badan) {
-      $person['tinggi_badan'] = $this->tinggi_badan;
+      $person['tinggi_badan'] = (float) $this->tinggi_badan;
     }
 
     return $person;

@@ -19,7 +19,10 @@ class MemberResource extends JsonResource
       'id' => $this->id,
       'person' => new PersonResource($this->person),
       'club' => new ClubSimpleResource($this->club),
-      'tanggal_gabung' => Carbon::parse($this->date_create)->format('d-m-Y'),
+      'tanggal_gabung' => [
+        'value' => Carbon::parse($this->date_create)->format('Y-m-d'),
+        'formatted' => Carbon::parse($this->date_create)->format('d-m-Y')
+      ],
       'status' => new StatusResource($this->status),
     ];
   }

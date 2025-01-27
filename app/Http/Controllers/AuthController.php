@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Enum\RolesEnum;
+use App\Http\Resources\ClubResource;
+use App\Http\Resources\MemberResource;
+use App\Http\Resources\PersonResource;
+use App\Http\Resources\StatusResource;
 use App\Models\Club;
 use App\Models\Member;
 use App\Models\Person;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -44,9 +49,31 @@ class AuthController extends Controller
 
     $token = $user->createToken($user->name);
 
+    $member = new MemberResource($user->member);
+
+    if($user->hasRole(RolesEnum::Member->value)) {
+      $profile = [
+        'person' => new PersonResource($member['person']), 
+        'club' => new ClubResource($member['club']), 
+        'tanggal_gabung' => [
+          'value' => Carbon::parse($member['date_create'])->format('Y-m-d'),
+          'formatted' => Carbon::parse($member['date_create'])->format('d-m-Y')
+        ],
+        'role' => $user->getRoleNames(),
+        'status' => new StatusResource($member['status'])
+      ];      
+    }
+    else {
+      $profile = [
+        'person' => new PersonResource($member['person']), 
+        'role' => $user->getRoleNames()
+      ];      
+    }
+
     return [
-      'user' => $user,
-      'token' => $token->plainTextToken
+      'token' => $token->plainTextToken,
+      'refresh_token' => null,
+      'profile' => $profile
     ];
   }
 
@@ -130,8 +157,8 @@ class AuthController extends Controller
         $token = $user->createToken($fields['nama']);
     
         return [
-          'user' => $user,
-          'token' => $token->plainTextToken
+          'token' => $token->plainTextToken,
+          'refresh_token' => null
         ];   
       } catch (\Throwable $th) {
         DB::rollBack();
