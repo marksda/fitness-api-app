@@ -40,14 +40,8 @@ class AuthController extends Controller
     $user = User::where('email', $request->email)->first();
 
     if (!$user || !Hash::check($request->password, $user->password)) {
-      return [
-        'errors' => [
-          'email' => ['The provided credentials are incorrect.']
-        ]
-      ];
+      return abort(401, 'Error: The provided credentials are incorrect.');
     }
-
-    $token = $user->createToken($user->name);
 
     $member = new MemberResource($user->member);
 
@@ -55,20 +49,22 @@ class AuthController extends Controller
       $profile = [
         'person' => new PersonResource($member['person']), 
         'club' => new ClubSimpleResource($member['club']), 
-        'tanggal_gabung' => [
-          'value' => Carbon::parse($member['date_create'])->format('Y-m-d'),
-          'formatted' => Carbon::parse($member['date_create'])->format('d-m-Y')
-        ],
+        'tanggal_gabung' => Carbon::parse($member['date_create'])->format('Y-m-d'),
         'role' => $user->getRoleNames(),
         'status' => new StatusResource($member['status'])
       ];      
     }
-    else {
+    else if($user->hasRole(RolesEnum::Admin->value)) {
       $profile = [
         'person' => new PersonResource($member['person']), 
         'role' => $user->getRoleNames()
       ];      
     }
+    else {
+      $profile = null;
+    }
+
+    $token = $user->createToken($user->name);
 
     return [
       'token' => $token->plainTextToken,
