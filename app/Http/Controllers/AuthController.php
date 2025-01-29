@@ -149,12 +149,22 @@ class AuthController extends Controller
         $member->save();  
 
         DB::commit();  
+        
+        $profile = [
+          'person' => new PersonResource($member['person']), 
+          'club' => new ClubSimpleResource($member['club']), 
+          'tanggal_gabung' => Carbon::parse($member['date_create'])->format('Y-m-d'),
+          'role' => $user->getRoleNames(),
+          'status' => new StatusResource($member['status'])
+        ];      
+        
 
         $token = $user->createToken($fields['nama']);
     
         return [
           'token' => $token->plainTextToken,
-          'refresh_token' => null
+          'refresh_token' => null,
+          'profile' => $profile
         ];   
       } catch (\Throwable $th) {
         DB::rollBack();
