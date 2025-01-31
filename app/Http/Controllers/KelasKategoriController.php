@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Enum\PermissionsEnum;
-use App\Models\Agama;
+use App\Http\Resources\KelasKategoriCollection;
+use App\Http\Resources\KelasKategoriResource;
+use App\Models\KelasKategori;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 
-class AgamaController extends Controller implements HasMiddleware
+class KelasKategoriController extends Controller implements HasMiddleware
 {
   public static function middleware(): array 
   {
@@ -23,7 +25,7 @@ class AgamaController extends Controller implements HasMiddleware
    */
   public function index()
   {
-    $query = Agama::query();
+    $query = KelasKategori::query();
     $filter = request("filters", null);
 
     if($filter != null) {
@@ -51,16 +53,17 @@ class AgamaController extends Controller implements HasMiddleware
 
       if(property_exists($filter, "is_paging")) {
         $isPaging = $filter->is_paging;
-        $agamas = $isPaging ? $query->paginate(10) : $query->get();
-      }
+        $kelas_kategori = $isPaging ? $query->paginate(10) : $query->get();
+      }    
       else {
-        $agamas = $query->get();
+        $kelas_kategori = $query->get();
       }
     }
     else {
-      $agamas = $query->get();
-    }    
-    return $agamas;
+      $kelas_kategori = $query->get();
+    }
+    
+    return new KelasKategoriCollection($kelas_kategori);
   }
 
   /**
@@ -69,9 +72,8 @@ class AgamaController extends Controller implements HasMiddleware
   public function store(Request $request)
   {
     if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
-      abort(403, 'Hak akses ditolak untuk menambah data agama');
+      abort(403, 'Hak akses ditolak untuk menambah data kelas kategori');
     }
-
 
     $fields = $request->validate([
       'id' => "required|string|size:2|regex:/^[0-9]+$/",
@@ -80,26 +82,26 @@ class AgamaController extends Controller implements HasMiddleware
 
     $fields['nama'] = strtoupper($fields['nama']);
 
-    $agama = Agama::create($fields);
+    $kelas_kategori = KelasKategori::create($fields);
 
-    return $agama;
+    return new KelasKategoriResource($kelas_kategori);
   }
 
   /**
    * Display the specified resource.
    */
-  public function show(Agama $agama)
+  public function show(KelasKategori $kelasKategori)
   {
-    return $agama;
+    return new KelasKategoriResource($kelasKategori);
   }
 
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, Agama $agama)
+  public function update(Request $request, KelasKategori $kelasKategori)
   {
     if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
-      abort(403, 'Hak akses ditolak untuk update data agama');
+      abort(403, 'Hak akses ditolak untuk update data kelas kategori');
     }
 
     $fields = $request->validate([
@@ -109,7 +111,7 @@ class AgamaController extends Controller implements HasMiddleware
 
     $fields['nama'] = strtoupper($fields['nama']);
 
-    $agama->update($fields);
+    $kelasKategori->update($fields);
 
     return ["status" => "sukses", "message" => "data berhasil diupdate"];
   }
@@ -117,14 +119,14 @@ class AgamaController extends Controller implements HasMiddleware
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(Agama $agama)
+  public function destroy(KelasKategori $kelasKategori)
   {
     if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
-      abort(403, 'Hak akses ditolak untuk hapus data agama');
+      abort(403, 'Hak akses ditolak untuk hapus data kelas kategori');
     }
 
 
-    $agama->delete();
+    $kelasKategori->delete();
 
     return ["status" => "sukses", "message" => "data berhasil dihapus"];
   }

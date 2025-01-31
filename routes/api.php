@@ -12,6 +12,7 @@ use App\Http\Controllers\PatnerController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\PropinsiController;
 use App\Http\Controllers\StatusController;
+use App\Models\KelasKategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,7 @@ Route::apiResource('desas', DesaController::class);
 Route::apiResource('genders', GenderController::class);
 Route::apiResource('kabupatens', KabupatenController::class); 
 Route::apiResource('kecamatans', KecamatanController::class);
+Route::apiResource('kelas_kategori', KelasKategori::class);
 Route::apiResource('members', MemberController::class);
 Route::apiResource('patners', PatnerController::class);
 Route::apiResource('people', PersonController::class);
