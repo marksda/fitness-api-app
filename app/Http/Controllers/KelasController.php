@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\PermissionsEnum;
 use App\Models\Kelas;
-use App\Http\Requests\StoreKelasRequest;
-use App\Http\Requests\UpdateKelasRequest;
 use App\Http\Resources\KelasCollection;
+use App\Http\Resources\KelasResource;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Gate;
 
 class KelasController extends Controller implements HasMiddleware
 {
@@ -67,9 +69,25 @@ class KelasController extends Controller implements HasMiddleware
   /**
    * Store a newly created resource in storage.
    */
-  public function store(StoreKelasRequest $request)
+  public function store(Request $request)
   {
-    //
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
+      abort(403, 'Hak akses ditolak untuk menambah data kelas');
+    }
+
+    $fields = $request->validate([
+      'id' => "required|string|size:2|regex:/^[0-9]+$/",
+      'nama' => "required|string|min:3|max:255",
+      'kelas_kategori_id' => "required|string|size:2|regex:/^[0-9]+$/",
+      'durasi' => "required|string|min:3|max:255",
+      'level_id' => "required|string|size:2|regex:/^[0-9]+$/",
+    ]);
+
+    $fields['nama'] = strtoupper($fields['nama']);
+
+    $kelas = Kelas::create($fields);
+
+    return new KelasResource($kelas);
   }
 
   /**
@@ -77,15 +95,30 @@ class KelasController extends Controller implements HasMiddleware
    */
   public function show(Kelas $kelas)
   {
-    //
+    return new KelasResource($kelas);
   }
 
   /**
    * Update the specified resource in storage.
    */
-  public function update(UpdateKelasRequest $request, Kelas $kelas)
+  public function update(Request $request, Kelas $kelas)
   {
-    //
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
+      abort(403, 'Hak akses ditolak untuk update data kelas');
+    }
+
+    $fields = $request->validate([
+      'id' => "string|size:2|regex:/^[0-9]+$/",
+      'nama' => "string|min:3|max:255",
+      'kelas_kategori_id' => "string|size:2|regex:/^[0-9]+$/",
+      'durasi' => "string|min:3|max:255",
+      'level_id' => "string|size:2|regex:/^[0-9]+$/",
+    ]);
+
+
+    $hasil = $kelas->update($fields);
+
+    return ["status" => "sukses", "message" => "data berhasil diupdate"];
   }
 
   /**
@@ -93,6 +126,12 @@ class KelasController extends Controller implements HasMiddleware
    */
   public function destroy(Kelas $kelas)
   {
-    //
+    if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
+      abort(403, 'Hak akses ditolak untuk hapus data kelas');
+    }
+
+    $kelas->delete();
+
+    return ["status" => "sukses", "message" => "data berhasil dihapus"];
   }
 }

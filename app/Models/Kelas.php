@@ -41,6 +41,6 @@ class Kelas extends Model
    */
   public function level(): BelongsTo
   {
-      return $this->belongsTo(level::class, 'level_id', 'id');
+    return $this->belongsTo(level::class, 'level_id', 'id');
   }
 }
