@@ -13,10 +13,10 @@ return new class extends Migration
     public function up(): void
     {
       DB::statement('CREATE SCHEMA IF NOT EXISTS master');
-        Schema::create('master.kelas_kategori', function (Blueprint $table) {
-          $table->char('id', 2)->primary();
-          $table->string('nama');
-        });
+      Schema::create('master.kelas_kategori', function (Blueprint $table) {
+        $table->char('id', 2)->primary();
+        $table->string('nama');
+      });
     }
 
     /**
