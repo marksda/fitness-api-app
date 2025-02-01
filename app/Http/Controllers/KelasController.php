@@ -93,15 +93,15 @@ class KelasController extends Controller implements HasMiddleware
   /**
    * Display the specified resource.
    */
-  public function show(Kelas $kelas)
+  public function show(Kelas $kela)
   {
-    return new KelasResource($kelas);
+    return new KelasResource($kela);
   }
 
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, Kelas $kelas)
+  public function update(Request $request, Kelas $kela)
   {
     if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
       abort(403, 'Hak akses ditolak untuk update data kelas');
@@ -116,7 +116,7 @@ class KelasController extends Controller implements HasMiddleware
     ]);
 
 
-    $hasil = $kelas->update($fields);
+    $kela->update($fields);
 
     return ["status" => "sukses", "message" => "data berhasil diupdate"];
   }
@@ -124,13 +124,13 @@ class KelasController extends Controller implements HasMiddleware
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(Kelas $kelas)
+  public function destroy(Kelas $kela)
   {
     if (! Gate::allows(PermissionsEnum::ManageDatas->value)) {
       abort(403, 'Hak akses ditolak untuk hapus data kelas');
     }
 
-    $kelas->delete();
+    $kela->delete();
 
     return ["status" => "sukses", "message" => "data berhasil dihapus"];
   }
