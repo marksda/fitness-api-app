@@ -21,7 +21,8 @@ class Kelas extends Model
     'nama',
     'kelas_kategori_id',
     'durasi',
-    'level_id'
+    'level_id',
+    'deskripsi',
   ];
 
   /**

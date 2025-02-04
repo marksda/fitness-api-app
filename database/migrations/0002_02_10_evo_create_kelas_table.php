@@ -19,6 +19,7 @@ return new class extends Migration
       $table->char('kelas_kategori_id', 2);
       $table->string('durasi');
       $table->char('level_id', 2);
+      $table->text('deskripsi');
       $table->foreign('kelas_kategori_id')
             ->references('id')->on('master.kelas_kategori')
             ->cascadeOnUpdate()

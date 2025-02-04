@@ -19,7 +19,8 @@ class KelasResource extends JsonResource
       'nama' => $this->nama,
       'kelas_kategori' => new KelasKategoriResource($this->kelasKategori),
       'durasi' => $this->durasi,
-      'level' => new LevelResource($this->level)
+      'level' => new LevelResource($this->level),
+      'deskripsi' => $this->deskripsi
     ];
   }
 }

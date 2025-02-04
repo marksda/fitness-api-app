@@ -80,8 +80,7 @@ class KelasController extends Controller implements HasMiddleware
       'nama' => "required|string|min:3|max:255",
       'kelas_kategori_id' => "required|string|size:2|regex:/^[0-9]+$/",
       'durasi' => "required|string|min:3|max:255",
-      'level_id' => "required|string|size:2|regex:/^[0-9]+$/",
-      'image_path' => "required|string|min:3|max:255"
+      'level_id' => "required|string|size:2|regex:/^[0-9]+$/"
     ]);
 
     $fields['nama'] = strtoupper($fields['nama']);
